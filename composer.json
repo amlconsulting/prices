@@ -1,0 +1,19 @@
+{
+    "name": "alane/prices",
+    "authors": [
+        {
+            "name": "Alex Lane",
+            "email": "alex.lane@internetrti.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.8"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.org"
+        },
+        { "packagist": false }
+    ]
+}
