@@ -1,27 +1,37 @@
 <?php
 
-class UserController extends BaseController{
+use UsersModel as Users;
+use ItemsModel as Items;
 
-    public function getAll($request, $response) {
-        // Get USer
-        $stmt = $this->db->query("select name, email from users where id = 1");
-        $user = $stmt->fetch();
+class HomeController extends BaseController{
 
-        // Get user items
-        $stmt = $this->db->query("select id, name, price from items where user_id = 1");
-        $items = $stmt->fetchAll();
-
+    public function getUserItemsByUserName($request, $response, $args) {
         try {
+            // Get User
+            $userModel = new Users($this->db, $this->logger);
+            $user = $userModel->getUserByUrlLink($args['user']);
+
+            // If the user isn't found
+            if(!$user) {
+                return $this->view->render($response, 'home/404.phtml', [
+                    'message' => 'The user you are attempting to find does not have a profile. Please verify your URL.'
+                ]);
+            }
+
+            // Get user items
+            $itemsModel = new Items($this->db, $this->logger);
+            $items = $itemsModel->getItemsByUserId($user['id']);
+
             return $this->view->render($response, 'home/main.phtml', [
                 'user' => $user,
                 'items' => $items
             ]);
         } catch(Exception $e) {
-            $this->logger->addInfo($e->getMessage());
+            $this->logger->addError($e->getMessage());
         }
     }
 
-    public function seed() {
+    public function seedItems() {
         $items = [
             [
                 "style" => "Carly",

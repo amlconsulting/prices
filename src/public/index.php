@@ -7,7 +7,7 @@ require '../application/config/paths.php';
 require VENDOR_PATH . 'autoload.php';
 require APP_PATH . 'autoload.php';
 
-$app = new Slim\App(['settings' => require CONFIG_PATH . 'settings.php']);
+$app = new \Slim\App(['settings' => require CONFIG_PATH . 'settings.php']);
 
 $container = $app->getContainer();
 
@@ -31,13 +31,18 @@ $container['db'] = function($c) {
 
 $container['view'] = new \Slim\Views\PhpRenderer(VIEW_PATH);
 
-$app->group('/user', function($request, $response) {
-    $this->get('', 'UserController:getAll');
-    $this->get('/seed', 'UserController:seed');
-});
+$app->add(new \Slim\Middleware\HttpBasicAuthentication([
+    "path" => "/admin",
+    "realm" => "Protected",
+    "authenticator" => new \Slim\Middleware\HttpBasicAuthentication\PdoAuthenticator([
+        "pdo" => $container['db'],
+        "user" => "email",
+        "hash" => "password"
+    ])
+]));
 
-$app->group('/item', function() {
-    $this->get('', 'ItemController:getAllByUserId');
-});
+$app->get('/admin', 'AdminController:login');
+
+$app->get('/[{user}]', 'HomeController:getUserItemsByUserName');
 
 $app->run();

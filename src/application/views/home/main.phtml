@@ -10,8 +10,12 @@
                 <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">Discounted Pricing</div>
-                        <div class="panel-body">
-                            <p>Below are my current discounted prices for my LuLaRoe inventory. Thanks for stopping by!</p>
+                        <div class="panel-body">                            
+                            <?php if(!$items): ?>
+                                <p><?= $user['name'] ?> doesn't have any items. If you feel this is in error, please contact <?= $user['name'] ?> at <a href="mailTo:<?= $user['email'] ?>"><?= $user['email'] ?></a></p>
+                            <?php else: ?>
+                                <p>Below are my current discounted prices for my LuLaRoe inventory. Thanks for stopping by!</p>
+                            <?php endif ?>
                         </div>
                         <ul class="list-group">
                             <?php foreach($items as $item): ?>
