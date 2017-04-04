@@ -1,13 +1,13 @@
 <?php
 
-session_start();
-
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../application/config/paths.php';
 require VENDOR_PATH . 'autoload.php';
 require APP_PATH . 'autoload.php';
+
+session_start();
 
 $app = new \Slim\App(['settings' => require CONFIG_PATH . 'settings.php']);
 
@@ -37,21 +37,11 @@ $container['csrf'] = function($c) {
     return new \Slim\Csrf\Guard;
 };
 
-$app->add(new \Slim\Middleware\HttpBasicAuthentication([
-    "path" => "/admin",
-    "passthrough" => ["/admin/login"],
-    "realm" => "Protected",
-    "authenticator" => new \Slim\Middleware\HttpBasicAuthentication\PdoAuthenticator([
-        "pdo" => $container['db'],
-        "user" => "email",
-        "hash" => "password"
-    ])
-]));
-
 $app->add($container->get('csrf'));
 
 $app->group('/admin', function() {
     $this->map(['GET', 'POST'], '/login', 'AdminController:login');
+    $this->get('/logout', 'AdminController:logout');
 });
 
 $app->get('/[{user}]', 'HomeController:getUserItemsByUserName');
