@@ -14,6 +14,8 @@
                         <div class="panel-body">                            
                             <div class="input-group col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
                                 <form class="form-horizontal" role="form" method="POST" action="<?= getenv('APP_URL') ?>/admin/login">
+                                    <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                                    <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
                                     <div class="form-group">
                                         <label for="email" class="control-label">Email</label>
                                         <input id="email" type="email" class="form-control" name="email" required>
@@ -23,7 +25,7 @@
                                         <input id="password" type="password" class="form-control" name="password" required>
                                     </div>
                                     <div class="form-group">
-                                        <buttons type="submit" class="btn btn-primary">Login</button>
+                                        <button type="submit" class="btn btn-primary">Login</button>
                                     </div>
                                 </form>
                             </div>

@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
@@ -31,6 +33,10 @@ $container['db'] = function($c) {
 
 $container['view'] = new \Slim\Views\PhpRenderer(VIEW_PATH);
 
+$container['csrf'] = function($c) {
+    return new \Slim\Csrf\Guard;
+};
+
 $app->add(new \Slim\Middleware\HttpBasicAuthentication([
     "path" => "/admin",
     "passthrough" => ["/admin/login"],
@@ -41,6 +47,8 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
         "hash" => "password"
     ])
 ]));
+
+$app->add($container->get('csrf'));
 
 $app->group('/admin', function() {
     $this->map(['GET', 'POST'], '/login', 'AdminController:login');
