@@ -33,6 +33,7 @@ $container['view'] = new \Slim\Views\PhpRenderer(VIEW_PATH);
 
 $app->add(new \Slim\Middleware\HttpBasicAuthentication([
     "path" => "/admin",
+    "passthrough" => ["/admin/login"],
     "realm" => "Protected",
     "authenticator" => new \Slim\Middleware\HttpBasicAuthentication\PdoAuthenticator([
         "pdo" => $container['db'],
@@ -41,7 +42,9 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
     ])
 ]));
 
-$app->get('/admin', 'AdminController:login');
+$app->group('/admin', function() {
+    $this->map(['GET', 'POST'], '/login', 'AdminController:login');
+});
 
 $app->get('/[{user}]', 'HomeController:getUserItemsByUserName');
 

@@ -13,7 +13,8 @@ class HomeController extends BaseController{
 
             // If the user isn't found
             if(!$user) {
-                return $this->view->render($response, 'home/404.phtml', [
+                return $this->view->render($response, 'error/error.phtml', [
+                    'error' => 'Page Not Found!',
                     'message' => 'The user you are attempting to find does not have a profile. Please verify your URL.'
                 ]);
             }
