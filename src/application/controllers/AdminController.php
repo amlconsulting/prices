@@ -3,8 +3,6 @@
 use UsersModel as Users;
 use ItemsModel as Items;
 
-//TODO - need to have a logout link in nav instead of contact link
-
 class AdminController extends BaseController {
 
     protected $csrf;
@@ -49,7 +47,8 @@ class AdminController extends BaseController {
             return $response->withRedirect(
                 $this->view->render($response, 'admin/main.phtml', [
                     'user' => $user,
-                    'items' => $items
+                    'items' => $items,
+                    'loggedIn' => true
                 ])
             );
         } else {
