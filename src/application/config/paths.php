@@ -10,4 +10,4 @@ define("CONFIG_PATH", APP_PATH . 'config' . DS);
 define("CONTROLLER_PATH", APP_PATH . 'controllers' . DS);
 define("MODEL_PATH", APP_PATH . 'models' . DS);
 define("VIEW_PATH", APP_PATH . 'views' . DS);
-define("INTERFACE_PATH", APP_PATH . 'interfaces' . DS);
+define("HELPER_PATH", APP_PATH . 'helpers' . DS);

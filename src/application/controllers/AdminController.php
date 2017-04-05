@@ -2,6 +2,7 @@
 
 use UsersModel as Users;
 use ItemsModel as Items;
+//use Respect\Validation\Validator as v;
 
 class AdminController extends BaseController {
 
@@ -10,10 +11,19 @@ class AdminController extends BaseController {
     public function __construct($container) {
         parent::__construct($container);
         $this->csrf = $container->csrf;
+
+        //TODO - redirect user to login page if not logged in
+        /*if(!$_SESSION['user']) {
+            return $this->view->render($response, 'admin/login.phtml', [
+                'csrf' => $this->getCsrfKeys($request),
+                'email' => '',
+                'errors' => []
+            ]); 
+        }*/
     }
 
     public function login($request, $response) {
-        if($request->getMethod() === 'GET') {    
+        if($request->isGet()) { 
             return $this->view->render($response, 'admin/login.phtml', [
                 'csrf' => $this->getCsrfKeys($request),
                 'email' => '',
@@ -38,7 +48,7 @@ class AdminController extends BaseController {
         }
 
         if(password_verify($user_pass, $user['password'])) {
-            $_SESSION['user'] = $user->id;
+            $_SESSION['user'] = $user['id'];
 
             $itemsModel = new Items($this->db, $this->logger);
             $items = $itemsModel->getItemsByUserId($user['id']);
@@ -71,6 +81,47 @@ class AdminController extends BaseController {
             'email' => '',
             'errors' => []
         ]);
+    }
+
+    public function user($request, $response) {
+        $userModel = new Users($this->db, $this->logger);
+        $user = $userModel->getUserByUserId($_SESSION['user']);
+
+        return $this->view->render($response, 'admin/user.phtml', [
+            'user' => $user,
+            'loggedIn' => true
+        ]);
+    }
+
+    public function editUser($request, $response) {
+        $userModel = new Users($this->db, $this->logger);
+        $user = $userModel->getUserByUserId($_SESSION['user']);
+
+        if($request->isGet()) {
+            return $this->view->render($response, 'admin/edituser.phtml', [
+                'csrf' => $this->getCsrfKeys($request),
+                'user' => $user,
+                'loggedIn' => true
+            ]);
+        }
+
+        $params = $request->getParsedBody();
+
+        $userUpdated = $userModel->updateUser($_SESSION['user'], $params);
+        $user = $userModel->getUserByUserId($_SESSION['user']);
+
+        return $this->view->render($response, 'admin/user.phtml', [
+            'user' => $user,
+            'loggedIn' => true,
+            'success' => $userUpdated
+        ]);
+
+        /*$nameValidator = v::stringVal()->max(255)->validate($request->inputs['name']);
+        $emailValidator = v::stringVal()->max(250)->validate($request->inputs['email']);
+        $passwordValidator = v::stringVal()->length(8, 20)->validate($request->inputs['password']);
+        $passwordConfirmValidator = v::stringVal()->length(8, 20)->equals($password)->validate($request->inputs['passwordConfirm']);
+
+        echo $nameValidator;*/        
     }
 
     private function getCsrfKeys($request) {

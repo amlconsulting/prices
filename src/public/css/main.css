@@ -30,3 +30,11 @@
     height: 45px;
     width: auto;
 }
+
+.user_attribute {
+    padding-top: 7px;
+}
+
+.right {
+    text-align: right;
+}

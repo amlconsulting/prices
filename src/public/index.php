@@ -42,6 +42,8 @@ $app->add($container->get('csrf'));
 $app->group('/admin', function() {
     $this->map(['GET', 'POST'], '/login', 'AdminController:login');
     $this->get('/logout', 'AdminController:logout');
+    $this->get('/user', 'AdminController:user');
+    $this->map(['GET', 'POST'], '/edituser', 'AdminController:editUser');
 });
 
 $app->get('/[{user}]', 'HomeController:getUserItemsByUserName');

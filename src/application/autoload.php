@@ -8,5 +8,7 @@ spl_autoload_register(function($classname) {
         require CONTROLLER_PATH . "$classname.php";
     } elseif(substr($classname, -5) == "Model") {
         require MODEL_PATH . "$classname.php";
+    } elseif(substr($classname, -6) == 'Helper') {
+        require HELPER_PATH . "$classname.php";
     }
 });
