@@ -48,10 +48,15 @@ $app->add($container->get('csrf'));
     }
 });*/
 
+$app->group('/api', function() {
+    $this->get('/validateuseredit', 'ApiController:validateUserEdit');
+});
+
 $app->group('/admin', function() {
     $this->map(['GET', 'POST'], '/login', 'AdminController:login');
     $this->get('/logout', 'AdminController:logout');
     $this->get('/user', 'AdminController:user');
+    $this->map(['GET', 'POST'], '/changepassword', 'AdminController:changePassword');
     $this->map(['GET', 'POST'], '/edituser', 'AdminController:editUser');
     $this->get('/items', 'AdminController:items');
     $this->map(['GET', 'POST'], '/additem', 'AdminController:addItem');

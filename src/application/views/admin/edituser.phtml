@@ -9,18 +9,28 @@
             <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="<?= $user['name'] ?>" required>                                           
+                <input type="text" class="form-control" maxlength="255" id="name" name="name" value="<?= $user['name'] ?>" required>                                           
             </div>                                    
-            <div class="form-group">
+            <div class="form-group<?= (array_key_exists('uri_link', $errors)) ? ' has-error' : '' ?>">
                 <label for="uri_link">Username</label>
-                <input type="text" class="form-control" id="uri_link" name="uri_link" value="<?= $user['uri_link'] ?>" required> 
+                <input type="text" class="form-control" maxlength="20" id="uri_link" name="uri_link" value="<?= ($params['uri_link']) ? $params['uri_link'] : $user['uri_link'] ?>" required> 
+                <?php if(array_key_exists('uri_link', $errors)): ?>
+                    <span class="help-block">
+                        <strong><?= $errors['uri_link'] ?></strong>
+                    </span>
+                <?php endif ?>
             </div>
-            <div class="form-group">
+            <div class="form-group<?= (array_key_exists('email', $errors)) ? ' has-error' : '' ?>">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?= $user['email'] ?>" required>
+                <input type="email" class="form-control" maxlength="250" id="email" name="email" value="<?= ($params['email']) ? $params['email'] : $user['email'] ?>" required>
+                <?php if(array_key_exists('email', $errors)): ?>
+                    <span class="help-block">
+                        <strong><?= $errors['email'] ?></strong>
+                    </span>
+                <?php endif ?>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" id="edit-user-submit" class="btn btn-primary">Save</button>
             </div>
         </form>   
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>

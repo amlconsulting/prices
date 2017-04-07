@@ -2,7 +2,6 @@
 
 use UsersModel as Users;
 use ItemsModel as Items;
-//use Respect\Validation\Validator as v;
 
 class AdminController extends BaseController {  
 
@@ -85,29 +84,66 @@ class AdminController extends BaseController {
             return $this->view->render($this->response, 'admin/edituser.phtml', [
                 'csrf' => $this->getCsrfKeys(),
                 'user' => $user,
-                'loggedIn' => true
+                'loggedIn' => true,
+                'errors' => [],
+                'params' => []
             ]);
         }
 
         $params = $this->request->getParsedBody();
 
-        /*$nameValidator = v::stringVal()->max(255)->validate($this->request->inputs['name']);
-        $emailValidator = v::stringVal()->max(250)->validate($rthis->equest->inputs['email']);
-        $passwordValidator = v::stringVal()->length(8, 20)->validate($this->request->inputs['password']);
-        $passwordConfirmValidator = v::stringVal()->length(8, 20)->equals($password)->validate($this->request->inputs['passwordConfirm']);
+        $errors = [];        
 
-        echo $nameValidator;*/        
+        if($userModel->checkEmailExists($params['email'])) {
+            $errors['email'] = 'Email already exists.';
+        }
 
-        $userUpdated = $userModel->updateUser($_SESSION['user'], $params);
+        if($userModel->checkUriExists($params['uri_link'])) {
+            $errors['uri_link'] = 'Username already exists.';
+        }
 
-        if($userUpdated){
+        if(count($errors) === 0){
+            $userUpdated = $userModel->updateUser($_SESSION['user'], $params);
+
+            if($userUpdated){
+                //flash success            
+            } else {
+                //flash fail
+            }
+
+            return $this->response->withRedirect('/admin/user');
+        } else {
+            return $this->view->render($this->response, 'admin/edituser.phtml', [
+                'csrf' => $this->getCsrfKeys(),
+                'user' => $user,
+                'loggedIn' => true,
+                'errors' => $errors,
+                'params' => $params
+            ]);
+        }
+    }  
+
+    public function changePassword() {    
+        if($this->request->isGet()) {
+            return $this->view->render($this->response, 'admin/changepassword.phtml', [
+                'csrf' => $this->getCsrfKeys()
+            ]);
+        }
+
+        $params = $this->request->getParsedBody();  
+
+        $userModel = new Users($this->db, $this->logger);            
+
+        $passwordUpdated = $userModel->updatePasswordByUserId($_SESSION['user'], $params['password']);
+
+        if($passwordUpdated){
             //flash success            
         } else {
             //flash fail
         }
 
         return $this->response->withRedirect('/admin/user');        
-    }     
+    }       
 
     public function addItem() {   
         if($this->request->isGet()) {

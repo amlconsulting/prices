@@ -14,7 +14,7 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-6">User Details</div>
-                                <div class="col-xs-6 right"><i class="fa fa-gear fa-fw">&nbsp;</i><a href="#" data-featherlight="<?= getenv('APP_URL') ?>/admin/edituser">Edit</a></div>
+                                <div class="col-xs-6 right"><i class="fa fa-gear fa-fw">&nbsp;</i><a href="<?= getenv('APP_URL') ?>/admin/edituser" data-featherlight="ajax">Edit</a></div>
                             </div>
                         </div>
                         <div class="panel-body">    
@@ -30,6 +30,10 @@
                                 <div class="form-group">
                                     <label for="email" class="control-label col-xs-4">Email</label>
                                     <div class="col-xs-8 user_attribute"><?= $user['email'] ?></div>   
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="control-label col-xs-4">Password</label>
+                                    <div class="col-xs-8 user_attribute"><a href="#" data-featherlight="<?= getenv('APP_URL') ?>/admin/changepassword">Change Password</a></div>   
                                 </div>
                             </form>
                         </div>

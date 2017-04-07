@@ -12,8 +12,7 @@
         "vlucas/phpdotenv": "^2.4",
         "slim/php-view": "^2.2",
         "tuupola/slim-basic-auth": "^2.2",
-        "slim/csrf": "^0.8.1",
-        "respect/validation": "^1.1"
+        "slim/csrf": "^0.8.1"
     },
     "repositories": [
         {

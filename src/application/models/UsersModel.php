@@ -78,4 +78,62 @@ class UsersModel extends BaseModel {
         } 
     }
 
+    public function updatePasswordByUserId($user_id, $password) {
+        $this->db->beginTransaction();
+        
+        try{
+            $stmt = $this->db->prepare("update users set password = :password where id = :user_id");
+            $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->execute();
+
+            $this->db->commit();
+
+            return true;
+        } catch(Exception $e) {
+            $this->logger->addError($e->getMessage());
+            $this->db->rollback();
+
+            return false;
+        } 
+    }
+
+    public function checkEmailExists($email) {
+        try{
+            $stmt = $this->db->prepare("select email from users where email = :email and id != :id");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':id', $_SESSION['user']);
+            $stmt->execute();
+
+            $user = $stmt->fetch();
+
+            if($stmt->rowCount() > 0) {
+                return true;
+            }
+
+            return false;
+        } catch(Exception $e) {
+            $this->logger->addError($e->getMessage());
+        } 
+    }
+
+    public function checkUriExists($uri_link) {
+        try{
+            $stmt = $this->db->prepare("select uri_link from users where uri_link = :uri_link and id != :id");
+            $stmt->bindParam(':uri_link', $uri_link);
+            $stmt->bindParam(':id', $_SESSION['user']);
+            $stmt->execute();
+
+            $user = $stmt->fetch();
+
+            if($stmt->rowCount() > 0) {
+                return true;
+            }
+
+            return false;
+        } catch(Exception $e) {
+            $this->logger->addError($e->getMessage());
+        } 
+    }
+
 }
