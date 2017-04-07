@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        <title>LuLaRoe <?= $user['name'] ?></title>
+        <?php include VIEW_PATH . 'layout/header.phtml' ?>
+        <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.2/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <?php include VIEW_PATH . 'layout/nav.phtml' ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-6">Discounted Pricing</div>
+                                <div class="col-xs-6 right"><i class="fa fa-plus fa-fw">&nbsp;</i><a href="#" data-featherlight="<?= getenv('APP_URL') ?>/admin/additem">Add</a></div>
+                            </div>                        
+                        </div>
+                        <div class="panel-body">                            
+                            <?php if(!$items): ?>
+                                <p>Oh no, you don't have any items. Let's add some!</p>
+                            <?php else: ?>
+                                <p>Below are your current discounted prices for your LuLaRoe inventory.</p>
+                                <p>You can direct your followers to the link below so they can view your prices:</p>
+                                <p class="center">
+                                    <a href="<?= getenv('APP_URL') ?>/<?= $user['uri_link'] ?>"><?= getenv('APP_URL') ?>/<?= $user['uri_link'] ?></a>
+                                </p>
+                            <?php endif ?>
+                        </div>
+                        <ul class="list-group">
+                            <?php foreach($items as $item): ?>
+                                <li class="list-group-item">   
+                                    <?= $item['name'] ?>    
+                                    <span class="badge"><a href="#" class="badge-link" data-featherlight="<?= getenv('APP_URL') ?>/admin/deleteitem/<?= $item['id'] ?>"><i class="fa fa-trash fa-fw"></i></a></span>
+                                    <span class="badge"><a href="#" class="badge-link" data-featherlight="<?= getenv('APP_URL') ?>/admin/edititem/<?= $item['id'] ?>"><i class="fa fa-pencil fa-fw"></i></a></span>
+                                    <span class="badge">$<?= $item['price'] ?></span>
+                                </li>
+                            <?php endforeach ?>
+                        </ul>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <?php include VIEW_PATH . 'layout/footer.phtml' ?>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.2/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+    </body>    
+</html>

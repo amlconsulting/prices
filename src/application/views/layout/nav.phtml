@@ -18,6 +18,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <?php if($loggedIn): ?>
+                            <li><a href="<?= getenv('APP_URL') ?>/admin/items">Items</a></li>
+                            <li><a href="<?= getenv('APP_URL') ?>/admin/user">Profile</a></li>
                             <li><a href="<?= getenv('APP_URL') ?>/admin/logout">Logout</a></li>                   
                         <?php else: ?>
                             <li><a href="mailTo:<?= $user['email'] ?>">Contact <?= $user['name'] ?></a></li>                   

@@ -34,16 +34,39 @@ $container['db'] = function($c) {
 $container['view'] = new \Slim\Views\PhpRenderer(VIEW_PATH);
 
 $container['csrf'] = function($c) {
-    return new \Slim\Csrf\Guard;
+    return new \Slim\Csrf\Guard('llrcsrf');
 };
 
 $app->add($container->get('csrf'));
+
+/*$app->add(function($request, $response, $next) {
+    if($response->getStatusCode() === 404) {
+        return $this->view->render($response, 'error/error.phtml', [
+            'error' => 'Page Not Found!',
+            'message' => 'The page you were looking for does not exist.'
+        ]);
+    }
+});*/
 
 $app->group('/admin', function() {
     $this->map(['GET', 'POST'], '/login', 'AdminController:login');
     $this->get('/logout', 'AdminController:logout');
     $this->get('/user', 'AdminController:user');
     $this->map(['GET', 'POST'], '/edituser', 'AdminController:editUser');
+    $this->get('/items', 'AdminController:items');
+    $this->map(['GET', 'POST'], '/additem', 'AdminController:addItem');
+    $this->map(['GET', 'POST'], '/edititem/{id}', 'AdminController:editItem');
+    $this->map(['GET', 'POST'], '/deleteitem/{id}', 'AdminController:deleteItem');
+})->add(function($request, $response, $next) {
+    if(!isset($_SESSION['user']) && $request->getRequestTarget() !== '/admin/login') {
+        return $response->withRedirect('/admin/login');
+    } else {
+        return $next($request, $response);
+    }
+});
+
+$app->get('/admin', function($request, $response, $next) {
+    return $response->withRedirect('/admin/items');
 });
 
 $app->get('/[{user}]', 'HomeController:getUserItemsByUserName');

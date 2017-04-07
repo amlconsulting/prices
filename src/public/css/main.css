@@ -38,3 +38,11 @@
 .right {
     text-align: right;
 }
+
+.badge-link {
+    color: #fff;
+}
+
+.badge-link:hover {
+    color: #fff;
+}

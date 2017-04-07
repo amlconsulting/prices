@@ -58,6 +58,7 @@ class UsersModel extends BaseModel {
 
     public function updateUser($user_id, $params) {
         $this->db->beginTransaction();
+        
         try{
             $stmt = $this->db->prepare("update users set name = :name, email = :email, uri_link = :uri_link where id = :user_id");
             $stmt->bindParam(':name', $params['name']);
