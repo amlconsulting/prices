@@ -1,16 +1,18 @@
 <div class="row">
     <nav class="navbar navbar-default">
         <div class="container">
-            <div class="navbar-header">   
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <div class="navbar-header"> 
+                <?php if($user): ?>  
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                <?php endif ?>
                 <a class="navbar-brand" href="#">
                     <div class="navbar-brand-name">
-                        <img src="<?= getenv('APP_URL') ?>/images/logo.png"/><?php if($user): ?> LuLaRoe <?= $user['name'] ?><?php endif ?>
+                        <img src="<?= getenv('APP_URL') ?>/images/logo.png"/><?php if($user): ?><?= $user['name'] ?><?php endif ?>
                     </div>
                 </a>
             </div>
