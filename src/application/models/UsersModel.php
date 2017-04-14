@@ -2,6 +2,26 @@
 
 class UsersModel extends BaseModel {
 
+    public function searchAllUsers($name) {
+        try{
+            $likeName = '%' . $name . '%';
+
+            $stmt = $this->db->prepare("select name, email, uri_link from users where name like :name");
+            $stmt->bindParam(':name', $likeName);
+            $stmt->execute();
+
+            $users = $stmt->fetchAll();
+
+            if($stmt->rowCount() === 0) {
+                return false;
+            }
+
+            return $users;
+        } catch(Exception $e) {
+            $this->logger->addError($e->getMessage());
+        } 
+    }
+
     public function getUserByUrlLink($name) {
         try{
             $stmt = $this->db->prepare("select id, name, email from users where uri_link = :userName");

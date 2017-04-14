@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <title>LuLaRoe <?= $user['name'] ?></title>
+        <?php include VIEW_PATH . 'layout/header.phtml' ?>
+    </head>
+    <body>
+        <?php include VIEW_PATH . 'layout/nav.phtml' ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">User Directory</div>
+                        <div class="panel-body">    
+                            <p>Search for a user by name. You can also search for a partial name. For example: for John Smith, you can search for John or Smith.</p>                        
+                            <form class="navbar-form navbar-left" method="POST" action="<?= getenv('APP_URL') ?>/search">
+                                <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                                <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="name" placeholder="Search" value="<?= $search ?>">
+                                </div>
+                                <button type="submit" class="btn btn-default">Submit</button>
+                            </form>
+                        </div>
+                        <ul class="list-group">
+                            <?php foreach($users as $user): ?>
+                                <li class="list-group-item">
+                                    <?= $user['name'] ?>
+                                    <span class="badge"><a href="<?= getenv('APP_URL') ?>/<?= $user['uri_link'] ?>" class="badge-link"><i class="fa fa-external-link fa-fw"></i> Visit</a></span>
+                                </li>
+                            <?php endforeach ?>
+                        </ul>
+                        <div class="panel-footer">
+                            <p>Possible paging</p>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <?php include VIEW_PATH . 'layout/footer.phtml' ?>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </body>    
+</html>

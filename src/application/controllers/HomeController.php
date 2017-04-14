@@ -3,7 +3,7 @@
 use UsersModel as Users;
 use ItemsModel as Items;
 
-class HomeController extends BaseController{
+class HomeController extends BaseController{    
 
     public function getUserItemsByUserName($request, $response, $args) {
         try {
@@ -23,7 +23,7 @@ class HomeController extends BaseController{
             $itemsModel = new Items($this->db, $this->logger);
             $items = $itemsModel->getItemsByUserId($user['id']);
 
-            return $this->view->render($response, 'home/main.phtml', [
+            return $this->view->render($response, 'home/useritems.phtml', [
                 'user' => $user,
                 'items' => $items
             ]);

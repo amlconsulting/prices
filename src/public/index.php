@@ -74,6 +74,10 @@ $app->get('/admin', function($request, $response, $next) {
     return $response->withRedirect('/admin/items');
 });
 
-$app->get('/[{user}]', 'HomeController:getUserItemsByUserName');
+$app->map(['GET', 'POST'], '/search', 'SearchController:search');
+
+$app->get('/{user}', 'HomeController:getUserItemsByUserName');
+
+$app->get('/', 'SearchController:search');
 
 $app->run();
